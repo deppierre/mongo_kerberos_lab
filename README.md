@@ -12,7 +12,7 @@ docker network create --subnet=172.18.0.0/24 mdb_kerberos_net
 docker build -f Dockerfile_server -t mdb_kerberos_host .
 ```
 
-## Run a new container based on the image build previously
+## Run a new container based on the mdb_kerberos_host image
 ```bash
 docker run --rm \
 --add-host="mdbsvc.krb5.mongodb-field.com:52.62.224.95" \
@@ -32,7 +32,7 @@ mdb_kerberos_host
 docker build -f Dockerfile_client -t mdb_client .
 ```
 
-## Run a new container that connect to the server using Kerberos authentication
+## Run a new container based on the mdb_client image
 ```bash
 docker run --rm \
 --add-host="mdbsvc.krb5.mongodb-field.com:172.18.0.2" \

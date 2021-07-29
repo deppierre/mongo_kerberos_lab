@@ -1,1 +1,2 @@
-Dockerfile* linguist-language=Dockerfile
+Dockerfile_client linguist-language=Dockerfile
+Dockerfile_server linguist-language=Dockerfile

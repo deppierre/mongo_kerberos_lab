@@ -1,0 +1,44 @@
+FROM ubuntu:16.04
+
+#Init environment variables
+ENV DEBIAN_FRONTEND=noninteractive 
+ENV datadir=/mongo/data/db
+ENV KRB5_KTNAME=${datadir}/keytab/mdbsvc.keytab
+ENV KRB5_CLIENT_KTNAME=${datadir}/keytab/mdbsvc.keytab
+ENV KRB5_TRACE=${datadir}/logs/mongodb-kerberos.log
+
+#Copy local files to the Docker image
+COPY keytab/* ${datadir}/keytab/
+COPY *.js ${datadir}/js/
+COPY conf/* ${datadir}/
+
+#Install requierments
+RUN apt-get update; apt-get upgrade &&\
+    apt-get -y install wget libcurl3 libgssapi-krb5-2 libldap-2.4-2 libwrap0 libsasl2-2 libsasl2-modules libsasl2-modules-gssapi-mit snmp openssl liblzma5 tzdata &&\ 
+#Install keytab
+    mkdir -p ${datadir}/logs &&\
+    mv ${datadir}/krb5.conf /etc/ &&\
+    chmod 600 ${datadir}/keytab/*.keytab &&\
+    \
+#Install MDB enterprise server (Kerberos)
+    wget -q -O "/tmp/mdb_enterprise.deb" https://repo.mongodb.com/apt/ubuntu/dists/xenial/mongodb-enterprise/4.4/multiverse/binary-amd64/mongodb-enterprise-server_4.4.6_amd64.deb &&\
+    dpkg -i /tmp/mdb_enterprise.deb &&\
+    rm -f /tmp/mdb_enterprise.deb &&\
+    \
+#Install MDB enterprise client
+    wget -q -O "/tmp/mdb_client.deb" https://repo.mongodb.com/apt/ubuntu/dists/xenial/mongodb-enterprise/4.4/multiverse/binary-amd64/mongodb-enterprise-shell_4.4.6_amd64.deb &&\
+    dpkg -i /tmp/mdb_client.deb &&\
+    rm -f /tmp/mdb_client.deb &&\
+    \
+#Install MDB enterprise tools
+    wget -q -O /tmp/mdb_tools.tgz https://downloads.mongodb.com/linux/mongodb-linux-x86_64-enterprise-ubuntu1604-4.4.6.tgz &&\
+    tar -xvf /tmp/mdb_tools.tgz -C /usr/bin/ --strip-components 2 &&\
+    \
+#Execute the init script and shutdown
+    mongod -f ${datadir}/mongod.conf &&\
+    mongo --port 27017 ${datadir}/js/init.js ;\
+    cat ${datadir}/logs/mongod.log
+
+#This is command issued when the container is created
+CMD mongod -f ${datadir}/mongod_kerberos.conf ;\
+    cat ${datadir}/logs/mongod.log

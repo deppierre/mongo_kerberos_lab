@@ -1,2 +1,2 @@
 Dockerfile_* linguist-detectable
-Dockerfile_* linguist-language=.dockerfile
+Dockerfile_* linguist-language=Dockerfile

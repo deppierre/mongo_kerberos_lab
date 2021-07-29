@@ -40,5 +40,6 @@ RUN apt-get update; apt-get upgrade &&\
     cat ${datadir}/logs/mongod.log
 
 #This is command issued when the container is created
-CMD mongod -f ${datadir}/mongod_kerberos.conf ;\
+CMD mongod -f ${datadir}/mongod_kerberos.conf &&\
+    tail -f ${datadir}/logs/mongod.log ;\
     cat ${datadir}/logs/mongod.log

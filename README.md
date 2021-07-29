@@ -1,4 +1,7 @@
-# Setup the network
+# Prerequisite for this lab
+The only thing you need is Docker Deskop (MacOS [here](https://docs.docker.com/docker-for-mac/install/))
+
+# Setup a new subnet
 ```bash
 docker network create --subnet=172.18.0.0/24 mdb_kerberos_net
 ```

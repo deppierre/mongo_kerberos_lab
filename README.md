@@ -6,7 +6,7 @@ docker network create --subnet=172.18.0.0/24 mdb_kerberos_net
 # Setup the mongod server using Kerberos authentication
 ## Build in directory kerberos_server/
 ```bash
-docker build kerberos_server/ -t mdb_kerberos_host
+docker build -f Dockerfile_server -t mdb_kerberos_host .
 ```
 
 ## Run a new container based on the image build previously
@@ -26,7 +26,7 @@ docker run --rm \
 # Setup the mongo client using Kerberos authentication
 ## Build in directory kerberos_client/
 ```bash
-docker build kerberos_client/ -t mdb_client
+docker build -f Dockerfile_client -t mdb_client .
 ```
 
 ## Run a new container that connect to the server using Kerberos authentication

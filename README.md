@@ -20,10 +20,10 @@ docker run --rm \
 --add-host="repl01.krb5.mongodb-field.com:52.62.224.95" \
 --add-host="repl02.krb5.mongodb-field.com:52.62.224.95" \
 --add-host="repl03.krb5.mongodb-field.com:52.62.224.95" \
--h kerberoshost \
 --network=mdb_kerberos_net \
 --ip 172.18.0.2 \
---name mdb_kerberos_container mdb_kerberos_host
+--name mdb_kerberos_container \
+mdb_kerberos_host
 ```
 
 # Setup the mongo client using Kerberos authentication

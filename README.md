@@ -1,5 +1,9 @@
 # Prerequisite for this lab
 The only thing you need is Docker Deskop (MacOS [here](https://docs.docker.com/docker-for-mac/install/))
+Also you need to copy your keytab files in the folder `keytab`:
+- client is `muser`
+- server is `mdbsvc`
+(both defined in the env variable `KRB5_KTNAME`)
 
 # Setup a new subnet
 ```bash
